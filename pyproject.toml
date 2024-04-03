@@ -12,9 +12,6 @@ exclude = [
 [tool.poetry.dependencies]
 python = "^3.12"
 python-json-logger = "^2.0.7"
-
-
-[tool.poetry.group.dev.dependencies]
 rich = "^13.7.1"
 
 [build-system]
