@@ -1,7 +1,19 @@
-
+import logging
 import os
+
+from .context import dynamic_logging_context
 from .dev import init_dev_logging
 from .json import init_json_logging
+
+
+old_factory = logging.getLogRecordFactory()
+
+
+def record_factory(*args, **kwargs):
+    record = old_factory(*args, **kwargs)
+    for key, value in dynamic_logging_context.get_logging_context().items():
+        setattr(record, key, value)
+    return record
 
 
 def is_logging_production(env_name: str) -> bool:
@@ -24,3 +36,4 @@ def init(json_logs=None):
         init_json_logging()
     else:
         init_dev_logging()
+    logging.setLogRecordFactory(record_factory)
