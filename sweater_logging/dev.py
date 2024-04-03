@@ -1,12 +1,91 @@
 import logging
+from datetime import datetime
+from logging import LogRecord
+from pathlib import Path
+from typing import Optional
 
 from rich.logging import RichHandler
+from rich.scope import render_scope
+from rich.traceback import Traceback
 
+default_items = [
+    'args',
+    'created',
+    'exc_info',
+    'exc_text',
+    'filename',
+    'funcName',
+    'levelname',
+    'levelno',
+    'lineno',
+    'message',
+    'module',
+    'msecs',
+    'msg',
+    'name',
+    'pathname',
+    'process',
+    'processName',
+    'relativeCreated',
+    'stack_info',
+    'taskName',
+    'thread',
+    'threadName',
+]
+
+
+def get_non_default_items(record: LogRecord) -> dict:
+    return {k: v for k, v in record.__dict__.items() if k not in default_items}
+
+
+class CustomRichHandler(RichHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def render(
+        self,
+        *,
+        record: LogRecord,
+        traceback: Optional[Traceback],
+        message_renderable: "ConsoleRenderable",
+    ) -> "ConsoleRenderable":
+        """Render log for display.
+
+        Args:
+            record (LogRecord): logging Record.
+            traceback (Optional[Traceback]): Traceback instance or None for no Traceback.
+            message_renderable (ConsoleRenderable): Renderable (typically Text) containing log message contents.
+
+        Returns:
+            ConsoleRenderable: Renderable to display log.
+        """
+        path = Path(record.pathname).name
+        level = self.get_level_text(record)
+        time_format = None if self.formatter is None else self.formatter.datefmt
+        log_time = datetime.fromtimestamp(record.created)
+        renderables = [message_renderable]
+        if traceback:
+            renderables.append(traceback)
+        extras = get_non_default_items(record)
+        if extras:
+            renderables.append(render_scope(extras))
+
+        log_renderable = self._log_render(
+            self.console,
+            renderables,
+            log_time=log_time,
+            time_format=time_format,
+            level=level,
+            path=path,
+            line_no=record.lineno,
+            link_path=record.pathname if self.enable_link_path else None,
+        )
+        return log_renderable
 
 def init_dev_logging():
     logging_format = "%(message)s"
     logging.basicConfig(
         level="DEBUG", format=logging_format, datefmt="[%I:%M:%S %p]", handlers=[
-            RichHandler(rich_tracebacks=True, tracebacks_show_locals=True)
+            CustomRichHandler(rich_tracebacks=True, tracebacks_show_locals=True)
         ]
     )
