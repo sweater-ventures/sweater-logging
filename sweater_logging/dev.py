@@ -90,6 +90,8 @@ def init_dev_logging() -> dict:
             'default': {
                 'format': "%(message)s",
                 'datefmt': "[%I:%M:%S %p]",
+            },
+            'access': {
             }
         },
         'handlers': {

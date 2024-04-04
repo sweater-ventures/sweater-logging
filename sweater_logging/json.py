@@ -27,6 +27,8 @@ def init_json_logging():
         'formatters': {
             'default': {
                 '()': 'sweater_logging.json.CustomJsonFormatter',
+            },
+            'access': {
             }
         },
         'handlers': {
