@@ -30,8 +30,6 @@ def init_json_logging():
             'default': {
                 '()': 'sweater_logging.json.CustomJsonFormatter',
             },
-            'access': {
-            }
         },
         'handlers': {
             'default': {
