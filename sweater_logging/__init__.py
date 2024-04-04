@@ -1,5 +1,6 @@
 import logging
 import os
+from logging.config import dictConfig
 
 from .context import dynamic_logging_context
 from .dev import init_dev_logging
@@ -22,18 +23,27 @@ def is_logging_production(env_name: str) -> bool:
     return False
 
 
+logging_config: dict = {}
+is_local: bool = True
+
+
 def init(json_logs=None):
+    global logging_config
+    global is_local
     production = False
     if 'ENV' in os.environ.keys():
         production = is_logging_production(os.environ['ENV'])
     if 'ENVIRONMENT' in os.environ.keys():
         production = is_logging_production(os.environ['ENVIRONMENT'])
+
     if 'JSON_LOGGING' in os.environ.keys():
         production = True
     if json_logs is not None:
         production = json_logs
+    is_local = not production
     if production:
-        init_json_logging()
+        logging_config = init_json_logging()
     else:
-        init_dev_logging()
+        logging_config = init_dev_logging()
+    dictConfig(logging_config)
     logging.setLogRecordFactory(record_factory)

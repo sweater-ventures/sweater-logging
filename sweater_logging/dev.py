@@ -82,10 +82,28 @@ class CustomRichHandler(RichHandler):
         )
         return log_renderable
 
-def init_dev_logging():
-    logging_format = "%(message)s"
-    logging.basicConfig(
-        level="DEBUG", format=logging_format, datefmt="[%I:%M:%S %p]", handlers=[
-            CustomRichHandler(rich_tracebacks=True, tracebacks_show_locals=True)
-        ]
-    )
+
+def init_dev_logging() -> dict:
+    return {
+        'version': 1,
+        'formatters': {
+            'default': {
+                'format': "%(message)s",
+                'datefmt': "[%I:%M:%S %p]",
+            }
+        },
+        'handlers': {
+            'rich': {
+                '()': 'sweater_logging.dev.CustomRichHandler',
+                'rich_tracebacks': True,
+                'tracebacks_show_locals': True,
+                'formatter': 'default'
+            }
+        },
+        'loggers': {
+            '': {
+                'handlers': ['rich'],
+                'level': 'DEBUG',
+            }
+        },
+    }

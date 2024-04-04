@@ -22,7 +22,23 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
 
 
 def init_json_logging():
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger()
-    formatter = CustomJsonFormatter()
-    logger.handlers[0].setFormatter(formatter)
+    return {
+        'version': 1,
+        'formatters': {
+            'default': {
+                '()': 'sweater_logging.json.CustomJsonFormatter',
+            }
+        },
+        'handlers': {
+            'default': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'default',
+            }
+        },
+        'loggers': {
+            '': {
+                'handlers': ['default'],
+                'level': 'INFO',
+            }
+        }
+    }
