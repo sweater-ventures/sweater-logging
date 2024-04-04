@@ -27,7 +27,7 @@ logging_config: dict = {}
 is_local: bool = True
 
 
-def init(json_logs=None):
+def uvicorn_init(json_logs: bool = None):
     global logging_config
     global is_local
     production = False
@@ -45,5 +45,9 @@ def init(json_logs=None):
         logging_config = init_json_logging()
     else:
         logging_config = init_dev_logging()
-    dictConfig(logging_config)
     logging.setLogRecordFactory(record_factory)
+
+
+def init(json_logs: bool = None):
+    uvicorn_init(json_logs=json_logs)
+    dictConfig(logging_config)

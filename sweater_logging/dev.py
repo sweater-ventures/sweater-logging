@@ -104,6 +104,10 @@ def init_dev_logging() -> dict:
             'root': {
                 'handlers': ['rich'],
                 'level': 'DEBUG',
-            }
-        },
+            },
+            'uvicorn': {
+                'handlers': ['rich'],
+                'level': 'DEBUG',
+            },
+        }
     }
