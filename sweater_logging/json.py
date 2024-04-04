@@ -36,7 +36,7 @@ def init_json_logging():
             }
         },
         'loggers': {
-            '': {
+            'root': {
                 'handlers': ['default'],
                 'level': 'INFO',
             }

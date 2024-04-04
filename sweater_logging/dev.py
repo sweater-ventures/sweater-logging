@@ -101,7 +101,7 @@ def init_dev_logging() -> dict:
             }
         },
         'loggers': {
-            '': {
+            'root': {
                 'handlers': ['rich'],
                 'level': 'DEBUG',
             }
