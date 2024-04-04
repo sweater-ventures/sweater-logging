@@ -31,6 +31,7 @@ default_items = [
     'taskName',
     'thread',
     'threadName',
+    'color_message',
 ]
 
 

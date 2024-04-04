@@ -19,6 +19,8 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
             log_record['logger'] = record.name
         if record.pathname:
             log_record['file'] = f'{record.pathname}:{record.lineno}'
+        if 'color_message' in log_record:
+            del log_record['color_message']
 
 
 def init_json_logging():
