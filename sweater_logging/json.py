@@ -42,5 +42,9 @@ def init_json_logging():
                 'handlers': ['default'],
                 'level': 'INFO',
             },
-        }
+            'uvicorn': {
+                'handlers': ['default'],
+                'level': 'INFO',
+            }
+        },
     }
