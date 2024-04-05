@@ -32,18 +32,18 @@ def init_json_logging():
             },
         },
         'handlers': {
-            'default': {
+            'console': {
                 'class': 'logging.StreamHandler',
                 'formatter': 'default',
             }
         },
         'loggers': {
             'root': {
-                'handlers': ['default'],
+                'handlers': ['console'],
                 'level': 'INFO',
             },
             'uvicorn': {
-                'handlers': ['default'],
+                'handlers': ['console'],
                 'level': 'INFO',
                 'propagate': False,
             }

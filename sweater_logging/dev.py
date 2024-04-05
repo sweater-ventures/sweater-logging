@@ -41,6 +41,8 @@ def get_non_default_items(record: LogRecord) -> dict:
 
 class CustomRichHandler(RichHandler):
     def __init__(self, *args, **kwargs):
+        if 'class' in kwargs.keys():
+            del kwargs['class']
         super().__init__(*args, **kwargs)
 
     def render(
@@ -94,7 +96,8 @@ def init_dev_logging() -> dict:
             },
         },
         'handlers': {
-            'rich': {
+            'console': {
+                'class': 'sweater_logging.dev.CustomRichHandler',  # for litestar
                 '()': 'sweater_logging.dev.CustomRichHandler',
                 'rich_tracebacks': True,
                 'tracebacks_show_locals': True,
@@ -103,11 +106,11 @@ def init_dev_logging() -> dict:
         },
         'loggers': {
             'root': {
-                'handlers': ['rich'],
+                'handlers': ['console'],
                 'level': 'DEBUG',
             },
             'uvicorn': {
-                'handlers': ['rich'],
+                'handlers': ['console'],
                 'level': 'DEBUG',
                 'propagate': False,
             }
