@@ -46,6 +46,10 @@ def init_json_logging():
                 'handlers': ['console'],
                 'level': 'INFO',
                 'propagate': False,
+            },
+            'uvicorn.access': {
+                'handlers': ['console'],
+                'level': 'CRITICAL',
             }
         },
     }

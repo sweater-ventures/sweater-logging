@@ -113,6 +113,10 @@ def init_dev_logging() -> dict:
                 'handlers': ['console'],
                 'level': 'DEBUG',
                 'propagate': False,
+            },
+            'uvicorn.access': {
+                'handlers': ['console'],
+                'level': 'CRITICAL',
             }
         }
     }
