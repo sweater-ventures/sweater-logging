@@ -13,8 +13,7 @@ old_factory = logging.getLogRecordFactory()
 def record_factory(*args, **kwargs):
     record = old_factory(*args, **kwargs)
     for key, value in dynamic_logging_context.get_logging_context().items():
-        if value is not None:
-            setattr(record, key, value)
+        setattr(record, key, value)
     return record
 
 
