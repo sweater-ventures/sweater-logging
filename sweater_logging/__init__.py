@@ -18,7 +18,11 @@ def record_factory(*args, **kwargs):
 
 
 def is_logging_production(env_name: str) -> bool:
-    if env_name.lower() == 'production' or env_name.lower() == 'prod' or env_name.lower() == 'staging':
+    if (
+        env_name.lower() == "production"
+        or env_name.lower() == "prod"
+        or env_name.lower() == "staging"
+    ):
         return True
     return False
 
@@ -31,12 +35,12 @@ def uvicorn_init(json_logs: bool = None):
     global logging_config
     global is_local
     production = False
-    if 'ENV' in os.environ.keys():
-        production = is_logging_production(os.environ['ENV'])
-    if 'ENVIRONMENT' in os.environ.keys():
-        production = is_logging_production(os.environ['ENVIRONMENT'])
+    if "ENV" in os.environ.keys():
+        production = is_logging_production(os.environ["ENV"])
+    if "ENVIRONMENT" in os.environ.keys():
+        production = is_logging_production(os.environ["ENVIRONMENT"])
 
-    if 'JSON_LOGGING' in os.environ.keys():
+    if "JSON_LOGGING" in os.environ.keys():
         production = True
     if json_logs is not None:
         production = json_logs
@@ -49,5 +53,6 @@ def uvicorn_init(json_logs: bool = None):
 
 
 def init(json_logs: bool = None):
+    global logging_config
     uvicorn_init(json_logs=json_logs)
     dictConfig(logging_config)
